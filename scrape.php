@@ -103,10 +103,19 @@ if ($showNcaaDate || $showNcaafDate || $showNhlDate || $showEplDate || $showUclD
 				foreach ($xml->tbody->tr as $r) {
 					$tv = $r->td[3]->div->div;
 					if (!$tv) {
-						$a = @$r->td[3]->div->a[0];
-						$img = '';
-						if ($a) $img = @$r->td[3]->div->a[0]->figure->div[1]->img;
-						if ($img) $tv = $img->attributes();
+						$tv = '';
+						for ($im = 0; $im <= 1; $im++) {
+							$a = @$r->td[3]->div->a[$im];
+							if ($a) {
+								$img = @$r->td[3]->div->a[$im]->figure->div[1]->img;
+								if ($img) $tv .= $img->attributes();
+								else {
+									$img = @$r->td[3]->div->a[$im]->img;
+									if ($img) $tv .= $img->attributes();
+								}
+							}
+							$tv .= ' ';
+						}
 					}
 					if ($tv == '' || $tv == 'ESPN3' || $tv == 'PAC12') { 
 						continue;
