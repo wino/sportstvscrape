@@ -58,7 +58,7 @@ if ($showNcaaDate || $showNcaafDate || $showNhlDate || $showEplDate || $showUclD
 		}
 
 		$rows = array();
-		if ($showNcaaDate) {
+		/*if ($showNcaaDate) {
 			// NCAAM bball
 			$doc = new DOMDocument;
 			$doc->loadHtml($contents);
@@ -77,7 +77,25 @@ if ($showNcaaDate || $showNcaafDate || $showNhlDate || $showEplDate || $showUclD
 					}
 				}
 				else $tv = $r->td[3]->div[0]->div;
-				$tv = strtoupper($tv);
+				if (!$tv) {
+					$tv = '';
+var_dump($r->td[3]->div->a[0]);
+					for ($im = 0; $im <= 1; $im++) {
+						$a = @$r->td[3]->div->a[$im];
+						if ($a) {
+echo "found a<br>";
+							$img = @$r->td[3]->div->a[$im]->figure->div[1]->img;
+							if ($img) $tv .= $img->attributes();
+							else {
+echo "didnt find img";
+								$img = @$r->td[3]->div->a[$im]->img;
+								if ($img) $tv .= $img->attributes();
+							}
+						} else echo "noa$im";
+						$tv .= ' ';
+					}
+				}
+				$tv = strtoupper(trim($tv));
 				if ($tv == 'ESPN3' || $tv == 'PAC12' || $tv == 'SECN+' || $tv == 'LHN' || $tv == 'BIG12' || $tv == 'BIG12|ESPN+') {
 					continue;
 				} else if ($tv == '' && !@$_GET['notv']) {
@@ -93,7 +111,7 @@ if ($showNcaaDate || $showNcaafDate || $showNhlDate || $showEplDate || $showUclD
 				$time = $r->td[2]->a;//div->span->a[1];
 				$rows[] = array($awayrank.$away, $homerank.$home, $time, $tv);
 			}
-		} else if ($showNcaafDate) {
+		} else*/ if ($showNcaaDate || $showNcaafDate) {
 			$doc = new DOMDocument;
 			@$doc->loadHtml($contents);
 			$xp = new DomXPath($doc);
@@ -117,7 +135,8 @@ if ($showNcaaDate || $showNcaafDate || $showNhlDate || $showEplDate || $showUclD
 							$tv .= ' ';
 						}
 					}
-					if ($tv == '' || $tv == 'ESPN3' || $tv == 'PAC12') { 
+					$tv = trim($tv);
+					if ($tv == '' || $tv == 'ESPN3' || $tv == 'PAC12' || $tv == 'ESPN+') { 
 						continue;
 					} 
 					$away = $r->td[0]->div->span->a[1];
