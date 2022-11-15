@@ -136,7 +136,7 @@ echo "didnt find img";
 						}
 					}
 					$tv = trim($tv);
-					if ($tv == '' || $tv == 'ESPN3' || $tv == 'PAC12') { 
+					if ($tv == '' || $tv == 'ESPN3' || $tv == 'PAC12' || $tv == 'ESPN+') { 
 						continue;
 					} 
 					$away = $r->td[0]->div->span->a[1];
