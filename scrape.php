@@ -45,7 +45,8 @@ if ($showNcaaDate || $showNcaafDate || $showNhlDate || $showEplDate || $showUclD
 		if ($showEplDate) {
 			$contentsArr = file('http://scores.nbcsports.com/epl/scoreboard_daily.asp?gameday='.$date);
 		} else if ($showUclDate) {
-			$contentsArr = file('http://scores.nbcsports.com/chlg/scoreboard_daily.asp?gameday='.$date);
+			//$contentsArr = file('http://scores.nbcsports.com/chlg/scoreboard_daily.asp?gameday='.$date);
+			$contents = file_get_contents($u='https://www.espn.com/soccer/schedule/_/date/'.$date.'/league/uefa.champions');
 		} else if ($showNcaaDate) {
 			$contents = file_get_contents('http://www.espn.com/mens-college-basketball/schedule/_/date/'.$date);
 			$contentsArr = array();
@@ -190,6 +191,27 @@ echo "didnt find img";
 				$rowdate = date('D Y-m-d', strtotime('+'.($i+1).' days', strtotime($date)));
 				$rows[] = array($rowdate);
 				unset($row);
+			}
+		} else if ($showUclDate) {
+			$doc = new DOMDocument;
+			@$doc->loadHtml($contents);
+			$xp = new DomXPath($doc);
+			$el = $xp->query("//table[contains(@class, 'Table')]");
+			for ($i=0; $i<$el->length; $i++) {
+				$xml = simplexml_import_dom($el->item($i));
+				foreach ($xml->tbody->tr as $r) {
+					$away = $r->td[0]->div->span->a[1];
+					$home = $r->td[1]->div->span->a[1];
+					$time = $r->td[2]->a;
+					foreach ($time->attributes() as $k=>$v) {
+						if($k=='data-date') {
+							$time = date('h:i A', strtotime($v));
+							break;
+						}
+					}
+					$rows[] = array($away, $home, $time, $tv);
+				} 
+				$rows[] = array('<hr>');
 			}
 		}
 
