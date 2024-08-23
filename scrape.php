@@ -140,7 +140,7 @@ echo "didnt find img";
 					if ($tv == '' || $tv == 'ESPN3' || $tv == 'PAC12' || $tv == 'LHN') { // || $tv == 'ESPN+'
 						continue;
 					} 
-					$acc = ['Duke', 'Boston College', 'Clemson', 'Florida State', 'Georgia Tech', 'Louisville', 'Miami', 'NC State', 'Notre Dame', 'Pittsburgh', 'Syracuse', 'Virginia', 'Virginia Tech', 'Wake Forest', 'North Carolina'];
+					$acc = ['Duke', 'Boston College', 'California', 'Clemson', 'Florida State', 'Georgia Tech', 'Louisville', 'Miami', 'NC State', 'Notre Dame', 'Pittsburgh', 'SMU', 'Stanford', 'Syracuse', 'Virginia', 'Virginia Tech', 'Wake Forest', 'North Carolina'];
 					$away = $r->td[0]->div->span->a[1];
 					$awayrank = @$r->td[0]->div->span->span;
 					$home = $r->td[1]->div->span[1]->a[1];
