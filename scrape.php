@@ -145,7 +145,7 @@ echo "didnt find img";
 					$awayrank = @$r->td[0]->div->span->span;
 					$home = $r->td[1]->div->span[1]->a[1];
 					$homerank = @$r->td[1]->div->span[1]->span;
-					if (!in_array($away, $acc) && !in_array($home, $acc) && !$awayrank && !$homerank) {
+					if (!$away || !$home || !in_array($away, $acc) && !in_array($home, $acc) && !$awayrank && !$homerank) {
 						continue;
 					}
 					$time = $r->td[2]->a;
