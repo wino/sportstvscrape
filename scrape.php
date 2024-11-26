@@ -137,7 +137,7 @@ echo "didnt find img";
 						}
 					}
 					$tv = trim($tv);
-					if ($tv == '' || $tv == 'ESPN3' || $tv == 'PAC12' || $tv == 'LHN') { // || $tv == 'ESPN+'
+					if ($tv == '' || $tv == 'ESPN3' || $tv == 'PAC12' || $tv == 'LHN' || $tv == 'B1G+') { // || $tv == 'ESPN+'
 						continue;
 					} 
 					$acc = ['Duke', 'Boston College', 'California', 'Clemson', 'Florida State', 'Georgia Tech', 'Louisville', 'Miami', 'NC State', 'Notre Dame', 'Pittsburgh', 'SMU', 'Stanford', 'Syracuse', 'Virginia', 'Virginia Tech', 'Wake Forest', 'North Carolina'];
