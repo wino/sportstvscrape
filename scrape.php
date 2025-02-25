@@ -204,6 +204,12 @@ echo "didnt find img";
 			for ($i=0; $i<$el->length; $i++) {
 				$xml = simplexml_import_dom($el->item($i));
 				foreach ($xml->tbody->tr as $r) {
+					foreach ($r->td->attributes() as $k=>$v) {
+						if ($k=='colspan') {
+							// "first leg" is colspan=6 on a row
+							continue 2;
+						}
+					}
 					$away = $r->td[0]->div->span->a[1];
 					$home = $r->td[1]->div->span->a[1];
 					$time = $r->td[2]->a;
