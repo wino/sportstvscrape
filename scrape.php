@@ -13,6 +13,7 @@ $res = array();
 $showNcaaDate = @$_GET['showNcaaDate'];
 $showNcaafDate = @$_GET['showNcaafDate'];
 $showNhlDate = @$_GET['showNhlDate'];
+$showNbaDate = @$_GET['showNbaDate'];
 $showEplDate = @$_GET['showEplDate'];
 $showUclDate = @$_GET['showUclDate'];
 $numdays = @$_GET['numdays'] ? $_GET['numdays'] : 1;
@@ -21,6 +22,7 @@ $ncaaDate = date('Ymd');//'today' //, strtotime('this Saturday'));
 $nextNcaaDate = date('Ymd', strtotime($numdaysstr, strtotime($ncaaDate)));
 $ncaafDate = date('Ymd');;
 $nhlDate = date('Ymd');//, strtotime('this Saturday'));
+$nbaDate = date('Ymd');//, strtotime('this Saturday'));
 $nextNhlDate = date('Ymd', strtotime($numdaysstr, strtotime($nhlDate)));
 $eplDate = date('Ymd', strtotime('this Saturday'));
 $nextEplDate = date('Ymd', strtotime($numdaysstr, strtotime($eplDate)));
@@ -30,13 +32,14 @@ echo '<table><tr><td><!--input type="button" onClick="document.theform.todo.valu
 <a href="?showNcaaDate='.$ncaaDate.'&numdays=1">Show NCAAM Schedule</a>
 <a href="?showNcaafDate='.$ncaafDate.'">Show NCAAF Schedule</a>
 &nbsp;<a href="?showNhlDate='.$nhlDate.'&numdays='.$numdays.'">Show NHL Schedule</a><!--&nbsp;<a href="?showNhlDate='.$nextNhlDate.'">Show Next Nhl Schedule</a-->
+&nbsp;<a href="?showNbaDate='.$nbaDate.'&numdays='.$numdays.'">Show NBA Schedule</a>
 &nbsp;<a href="?showEplDate='.$eplDate.'">Show EPL Schedule</a>&nbsp;<a href="?showEplDate='.$nextEplDate.'&numdays='.$numdays.'">Show Next EPL Schedule</a>
 &nbsp;<a href="?showUclDate='.$uclDate.'">Show UCL Schedule</a>&nbsp;<a href="?showUclDate='.$nextUclDate.'&numdays='.$numdays.'">Show Next UCL Schedule</a><br>
 </td></tr><tr>';
 
-if ($showNcaaDate || $showNcaafDate || $showNhlDate || $showEplDate || $showUclDate) {
+if ($showNcaaDate || $showNcaafDate || $showNhlDate || $showNbaDate || $showEplDate || $showUclDate) {
 	echo "<td><table>\n";
-	$date = $showEplDate ? $showEplDate : ($showUclDate ? $showUclDate : ($showNcaaDate ? $showNcaaDate : ($showNcaafDate ? $showNcaafDate : $showNhlDate))); 
+	$date = $showEplDate ? $showEplDate : ($showUclDate ? $showUclDate : ($showNcaaDate ? $showNcaaDate : ($showNcaafDate ? $showNcaafDate : ($showNhlDate ? $showNhlDate : $showNbaDate)))); 
 	$end_date = date('Ymd', strtotime($numdaysstr, strtotime($date)));
 
 	$dates = array();
@@ -53,8 +56,11 @@ if ($showNcaaDate || $showNcaafDate || $showNhlDate || $showEplDate || $showUclD
 		} else if ($showNcaafDate) {
 			$contents = file_get_contents('http://www.espn.com/college-football/schedule');
 			$contentsArr = array();
-		} else {
+		} else if ($showNhlDate) {
 			$contents = file_get_contents('http://www.espn.com/nhl/schedule/_/date/'.$date);
+			$contentsArr = array();
+		} else {
+			$contents = file_get_contents('http://www.espn.com/nba/schedule/_/date/'.$date);
 			$contentsArr = array();
 		}
 
@@ -159,7 +165,7 @@ echo "didnt find img";
 				} 
 				$rows[] = array('<hr>');
 			} 
-		} else if ($showNhlDate) {
+		} else if ($showNhlDate || $showNbaDate) {
 			$doc = new DOMDocument;
 			$doc->loadHtml($contents);
 			$xp = new DomXPath($doc);
